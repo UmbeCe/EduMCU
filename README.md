@@ -1,2 +1,231 @@
 # EduMCU
-Educational Python framework for simulating microcontrollers. Learn embedded systems through a modular, hardware-independent environment featuring CPU, GPIO, ADC, PWM, timers, serial communication, and signal simulation. Principally made withChat GPT
+
+Acknowledgements
+
+EduMCU was designed and developed by Robert.
+
+ The project very hugely benefited from iterative design discussions, code reviews, debugging assistance, and documentation support provided through OpenAI's ChatGPT.
+
+**EduMCU** est un simulateur de microcontrôleur écrit en Python, conçu pour l'apprentissage de l'électronique embarquée, de l'architecture des microcontrôleurs et du développement de pilotes matériels.
+
+Le projet met l'accent sur une architecture claire, modulaire et pédagogique. Chaque composant est développé indépendamment, testé individuellement, puis intégré progressivement au système.
+
+---
+
+# Objectifs
+
+EduMCU a pour objectif de :
+
+* apprendre le fonctionnement interne d'un microcontrôleur ;
+* comprendre la communication entre le processeur et les périphériques ;
+* expérimenter des algorithmes embarqués sans matériel physique ;
+* proposer une architecture simple et extensible pour créer de nouveaux périphériques.
+
+---
+
+# Fonctionnalités
+
+## Cœur de simulation
+
+* Horloge (`Clock`)
+* Processeur (`CPU`)
+* Bus mémoire (`Bus`)
+* Gestionnaire de périphériques (`DeviceManager`)
+* Ordonnanceur (`Scheduler`)
+* Runtime de simulation (`Runtime`)
+* Carte virtuelle (`Board`)
+
+## Périphériques
+
+### GPIO
+
+* `DigitalOut`
+* `DigitalIn`
+
+### Convertisseur Analogique
+
+* `AnalogIn`
+* `Signal`
+* `SampledSignal`
+
+### PWM
+
+* `PwmOut`
+
+### UART
+
+* `Serial`
+
+### Timers
+
+* `Timer`
+
+---
+
+# Architecture
+
+```text
+               Board
+                  ¦
+       +---------------------+
+       ?                     ?
+   Runtime             DeviceManager
+       ¦                     ¦
+       ?                     ?
+      CPU              Peripheral
+       ¦                     ¦
+       ?                     ?
+     Clock              Hardware Devices
+```
+
+Chaque classe possède une responsabilité unique.
+
+Le `Board` assemble les composants.
+
+Le `Runtime` pilote la simulation.
+
+Le `Scheduler` exécute les tâches périodiques.
+
+Le `DeviceManager` gère les périphériques connectés au bus.
+
+Les périphériques (`DigitalOut`, `AnalogIn`, `Serial`, `PwmOut`...) encapsulent les composants matériels simulés.
+
+---
+
+# Structure du projet
+
+```text
+EduMCU/
+
+clock.py
+cpu.py
+bus.py
+bus_device.py
+
+runtime.py
+scheduler.py
+
+device_manager.py
+peripheral.py
+
+board.py
+
+digital_device.py
+digital_out.py
+digital_in.py
+
+analog_device.py
+analog_in.py
+signal.py
+sampled_signal.py
+
+pwm_device.py
+pwm_out.py
+
+serial_device.py
+serial.py
+
+timer.py
+
+tests/
+examples/
+docs/
+```
+
+---
+
+# Premier programme
+
+```python
+from board import Board
+
+board = Board()
+
+led = board.DigitalOut("LED1")
+
+while True:
+
+    led.toggle()
+
+    board.run(480000)
+```
+
+---
+
+# Tests
+
+Chaque module possède son propre programme de test.
+
+Les tests sont répartis en deux catégories :
+
+* tests unitaires ;
+* tests d'intégration.
+
+Ils permettent de valider progressivement chaque composant avant son intégration au système complet.
+
+---
+
+# Philosophie du projet
+
+EduMCU suit quelques principes simples :
+
+* une classe = une responsabilité ;
+* un fichier = une classe principale ;
+* un test dédié pour chaque fichier ;
+* architecture modulaire ;
+* documentation systématique ;
+* développement incrémental.
+
+Cette approche facilite la compréhension du code et l'ajout de nouveaux périphériques.
+
+---
+
+# Feuille de route
+
+## Version 1.x
+
+* Stabilisation du cœur
+* Documentation
+* Exemples pédagogiques
+* Amélioration des tests
+
+## Version 2.x
+
+* SPI
+* I²C
+* DAC
+* CAN
+* EEPROM
+* Flash
+* LCD
+* DMA
+* Interruptions
+
+## Version 3.x
+
+* Analyseur logique
+* Oscilloscope virtuel
+* Générateur de signaux
+* Terminal série
+* Interface graphique
+
+---
+
+# Contribution
+
+Les contributions sont les bienvenues.
+
+Toute nouvelle fonctionnalité est développée selon la méthode suivante :
+
+1. création du fichier Python ;
+2. création du fichier de test ;
+3. validation du test ;
+4. intégration au projet.
+
+---
+
+# Licence
+
+Projet éducatif développé en Python.
+
+Libre d'utilisation à des fins d'apprentissage, d'enseignement et d'expérimentation.
